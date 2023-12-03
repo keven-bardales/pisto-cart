@@ -1,24 +1,26 @@
-import { View, Text } from "react-native";
+import { Text } from "react-native";
 import { Button, Card, Image, SearchBar } from "@rneui/base";
-import { Link, Stack } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
+import {
+  productCategoryStore,
+  useProductCategoryStore,
+} from "@/stores/product-category/product-category.store";
 
 export default function Home() {
   const searchBarRef = useRef(null);
 
-  const [categories, setCategories] = useState([]);
+  const categories = useProductCategoryStore((state) => state.parentCategories);
 
   const [search, setsearch] = useState("");
 
   useEffect(() => {
-    fetch(`${process.env.EXPO_PUBLIC_API_URL}/productCategory/getAll`)
-      .then((response) => response.json())
-      .then((json) => {
-        console.log(json);
-        setCategories(json.data ?? []);
-      })
-      .catch((error) => console.error(error));
+    productCategoryStore
+      .getCategories()
+      .then((categories) => {})
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   const updateSearch = (search) => {
