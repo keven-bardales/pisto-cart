@@ -84,7 +84,8 @@ export default function Home() {
           .includes(searchToLowerCase) ||
         `${product.name} ${product.productCategory?.name} ${product.price}`
           .toLowerCase()
-          .includes(searchToLowerCase)
+          .includes(searchToLowerCase) ||
+        product.code.toLowerCase().includes(searchToLowerCase)
     );
 
     setfilteredProducts(newProducts);
