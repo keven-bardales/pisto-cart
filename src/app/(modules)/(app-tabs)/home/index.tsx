@@ -63,8 +63,8 @@ export default function Home() {
     setScanned(true);
     setQrData(data);
     setsearchByQrCode(false);
-    setsearch(data);
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    updateSearch(data);
   };
 
   const updateSearch = (search: string) => {
