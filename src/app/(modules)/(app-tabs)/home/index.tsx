@@ -78,13 +78,6 @@ export default function Home() {
         product.productCategory?.name
           .toLowerCase()
           .includes(searchToLowerCase) ||
-        `${product.price}`.toLowerCase().includes(searchToLowerCase) ||
-        `${product.name} ${product.productCategory?.name}`
-          .toLowerCase()
-          .includes(searchToLowerCase) ||
-        `${product.name} ${product.productCategory?.name} ${product.price}`
-          .toLowerCase()
-          .includes(searchToLowerCase) ||
         product.code.toLowerCase().includes(searchToLowerCase)
     );
 
