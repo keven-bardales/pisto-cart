@@ -5,6 +5,7 @@ import {
 import { Link, Stack } from "expo-router";
 import { useEffect } from "react";
 import { View, Text } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Products() {
   const categories = useProductCategoryStore(
@@ -15,25 +16,25 @@ export default function Products() {
     productCategoryStore
       .getCategories()
       .then((categories) => {})
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   }, []);
 
   return (
-    <View>
-      <Text>Products</Text>
-      <Link
-        href={{
-          pathname: "products/50",
-        }}
-      >
-        Ver producto 50
-      </Link>
+    <SafeAreaView>
+      <View>
+        <Text>Products</Text>
+        <Link
+          href={{
+            pathname: "products/50",
+          }}
+        >
+          Ver producto 50
+        </Link>
 
-      {categories.map((cate) => {
-        return <Text key={`${cate.name}`}>{cate.name}</Text>;
-      })}
-    </View>
+        {categories.map((cate) => {
+          return <Text key={`${cate.name}`}>{cate.name}</Text>;
+        })}
+      </View>
+    </SafeAreaView>
   );
 }

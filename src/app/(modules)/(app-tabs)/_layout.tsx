@@ -28,6 +28,14 @@ export default function AppTabs() {
           title: "Perfil",
         }}
       />
+      <Tabs.Screen
+        name="product-category"
+        options={{
+          headerShown: false,
+          title: "categorias",
+          href: null,
+        }}
+      />
     </Tabs>
   );
 }

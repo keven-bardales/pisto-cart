@@ -1,6 +1,7 @@
 import { ThemeProvider } from "@rneui/themed";
 import { Stack, Tabs } from "expo-router";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import Toast from "react-native-toast-message";
 
 export default function Layout(props) {
   return (
@@ -11,6 +12,7 @@ export default function Layout(props) {
             headerShown: false,
           }}
         ></Stack>
+        <Toast />
       </SafeAreaProvider>
     </ThemeProvider>
   );

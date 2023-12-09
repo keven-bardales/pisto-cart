@@ -31,13 +31,12 @@ export class ProductCategoryStore {
   }
 
   async getCategories() {
-    const categories = useProductCategoryStore.getState().productCategories;
+    const productCategories =
+      useProductCategoryStore.getState().productCategories;
 
-    if (categories.length === 0) {
+    if (productCategories.length === 0) {
       try {
         const response = await productCategoryService.getAll();
-
-        console.log(response);
 
         if (response.fetchResponse.ok) {
           this.setCategories(response.responseData.data);
@@ -53,12 +52,14 @@ export class ProductCategoryStore {
     useProductCategoryStore.getState().setProductCategories(productCategories);
   }
 
-  async setParentCategories() {
+  async setParentCategories(parentcategories?: ProductCategory[]) {
     const categories = useProductCategoryStore.getState().productCategories;
 
-    const parentCategories = categories.filter((category) => {
-      return category.parentCategoryId === null;
-    });
+    const parentCategories = parentcategories
+      ? parentcategories
+      : categories.filter((category) => {
+          return category.parentCategoryId === null;
+        });
 
     useProductCategoryStore.getState().setParentCategories(parentCategories);
   }
