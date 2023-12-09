@@ -36,6 +36,13 @@ export default function AppTabs() {
           href: null,
         }}
       />
+      <Tabs.Screen
+        name="cart/index"
+        options={{
+          headerShown: false,
+          title: "Carrito",
+        }}
+      />
     </Tabs>
   );
 }
