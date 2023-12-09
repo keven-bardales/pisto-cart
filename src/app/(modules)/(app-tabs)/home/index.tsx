@@ -145,15 +145,6 @@ export default function Home() {
               </Button>
             </View>
 
-            <Text>
-              {JSON.stringify({
-                scanned,
-                hasPermission,
-                qrData,
-                searchByQrCode,
-              })}
-            </Text>
-
             {!isLoading && filteredProducts.length === 0 ? (
               <View style={{ alignItems: "center", justifyContent: "center" }}>
                 <Text
@@ -207,33 +198,48 @@ export default function Home() {
                         padding: 5,
                         backgroundColor: "#fff",
                         borderRadius: 5,
-                        display: "flex",
-                        flexDirection: "column",
                         width: "40%",
+                        display: "flex",
                         flexGrow: 1,
                         margin: 5,
                       }}
                       href={`product-category/${category.id}`}
                       key={category.id}
                     >
-                      <Image
+                      <View
                         style={{
+                          padding: 5,
+                          backgroundColor: "#fff",
+                          borderRadius: 5,
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "center",
+                          flexGrow: 1,
+                          margin: 5,
                           width: "100%",
-                          minWidth: 100,
-                          minHeight: 200,
-                          height: "auto",
-                        }}
-                        source={{
-                          uri: category.imageUrl,
-                        }}
-                      />
-                      <Card.Title
-                        style={{
-                          marginTop: 5,
+                          position: "relative",
                         }}
                       >
-                        {category.name}
-                      </Card.Title>
+                        <Image
+                          style={{
+                            width: "100%",
+                            minWidth: 350,
+                            minHeight: 200,
+                            height: "auto",
+                            flexGrow: 1,
+                          }}
+                          source={{
+                            uri: category.imageUrl,
+                          }}
+                        />
+                        <Card.Title
+                          style={{
+                            marginTop: 5,
+                          }}
+                        >
+                          {category.name}
+                        </Card.Title>
+                      </View>
                     </Link>
                   );
                 })}
