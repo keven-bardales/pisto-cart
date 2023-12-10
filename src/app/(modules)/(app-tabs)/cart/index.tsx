@@ -1,47 +1,18 @@
 import { CartStore, cartStore, useCartStore } from "@/stores/cart/cart.store";
 import { CartDetail } from "@/types/cart/types/cart.type";
 import React from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Image } from "@rneui/base";
-
-// Datos ficticios para el carrito de compra con imágenes
 
 const CartPage = () => {
   // Obtener el carrito de la tienda usando useCartStore
   const cart = useCartStore((state) => state.cart);
   const setCart = useCartStore((state) => state.setCart);
 
-  // Función para agregar cantidad a un ítem del carrito
-  const increaseQuantity = (itemId) => {
-    // Implementa la lógica para aumentar la cantidad del ítem del carrito aquí
-    console.log(`Aumentar cantidad para el producto con ID ${itemId}`);
-  };
-
-  // Función para reducir cantidad de un ítem del carrito
-  const decreaseQuantity = (itemId) => {
-    // Implementa la lógica para reducir la cantidad del ítem del carrito aquí
-    console.log(`Reducir cantidad para el producto con ID ${itemId}`);
-  };
-
-  // Función para eliminar un ítem del carrito
-  const removeFromCart = (itemId) => {
-    // Implementa la lógica para eliminar el ítem del carrito aquí
-    console.log(`Eliminar producto con ID ${itemId} del carrito`);
-  };
-
   // Calcular el total del carrito
   const calculateTotal = () => {
-    return cart.cartDetail.reduce(
-      (total, item) => total + item.price * item.quantity,
-      0
-    );
+    return cart.cartDetail.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
   const renderCartItem = (item: CartDetail) => {
@@ -76,7 +47,7 @@ const CartPage = () => {
         </View>
         <TouchableOpacity
           onPress={() => {
-            cartStore.removeProduct(item);
+            cartStore.removeProduct(item.productId);
           }}
         >
           <Text style={styles.removeButton}>Eliminar</Text>
@@ -89,9 +60,7 @@ const CartPage = () => {
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <Text style={styles.title}>Carrito de Compra</Text>
-        <View style={styles.cartItemsContainer}>
-          {cart.cartDetail.map((item) => renderCartItem(item))}
-        </View>
+        <View style={styles.cartItemsContainer}>{cart.cartDetail.map((item) => renderCartItem(item))}</View>
         <View style={styles.totalContainer}>
           <Text style={styles.totalText}>Total:</Text>
           <Text style={styles.totalAmount}>${calculateTotal()}</Text>

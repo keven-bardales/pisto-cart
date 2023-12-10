@@ -37,9 +37,7 @@ export class Cart {
       object?.updatedAt ?? "",
       object?.user ?? {},
       object?.cartStatus ?? {},
-      object?.cartDetail?.map((cartDetail: any) =>
-        CartDetail.fromObject(cartDetail)
-      ) ?? []
+      object?.cartDetail?.map((cartDetail: any) => CartDetail.fromObject(cartDetail)) ?? []
     );
   }
 
@@ -66,24 +64,13 @@ export class Cart {
   };
 
   removeProduct = (productId: string) => {
-    const foundIndex = this.cartDetail.findIndex(
-      (cartDetail) => cartDetail.productId === productId
-    );
+    this.cartDetail = this.cartDetail.filter((cartDetail) => cartDetail.product.id !== productId);
 
-    if (foundIndex !== -1) {
-      const quantity = this.cartDetail[foundIndex].quantity;
-      if (quantity > 1) {
-        this.cartDetail[foundIndex].quantity -= 1;
-      } else {
-        this.cartDetail.splice(foundIndex, 1);
-      }
-    }
+    console.log(this);
   };
 
   increaseQuantity = (productId: string) => {
-    const foundIndex = this.cartDetail.findIndex(
-      (cartDetail) => cartDetail.productId === productId
-    );
+    const foundIndex = this.cartDetail.findIndex((cartDetail) => cartDetail.productId === productId);
 
     if (foundIndex !== -1) {
       this.cartDetail[foundIndex].quantity += 1;
@@ -91,9 +78,7 @@ export class Cart {
   };
 
   decreaseQuantity = (productId: string) => {
-    const foundIndex = this.cartDetail.findIndex(
-      (cartDetail) => cartDetail.productId === productId
-    );
+    const foundIndex = this.cartDetail.findIndex((cartDetail) => cartDetail.productId === productId);
 
     if (foundIndex !== -1) {
       const quantity = this.cartDetail[foundIndex].quantity;
@@ -104,9 +89,7 @@ export class Cart {
   };
 
   productExists = (productId: string) => {
-    return this.cartDetail.some(
-      (cartDetail) => cartDetail.productId === productId
-    );
+    return this.cartDetail.some((cartDetail) => cartDetail.productId === productId);
   };
 
   emptyCart = () => {
@@ -121,35 +104,17 @@ export class Cart {
 }
 
 export class CartDetail {
-  constructor(
-    public id: string,
-    public quantity: number,
-    public price: number,
-    public productId: string,
-    public cartId: string,
-    public product: Product
-  ) {}
+  constructor(public id: string, public quantity: number, public price: number, public productId: string, public cartId: string, public product: Product) {}
 
   static fromObject(object: any) {
     const id = uuidv4();
 
-    return new CartDetail(
-      id,
-      object?.quantity ?? 1,
-      object?.price ?? 0,
-      object?.productId ?? "",
-      object?.cartId ?? "",
-      object?.product ?? {}
-    );
+    return new CartDetail(id, object?.quantity ?? 1, object?.price ?? 0, object?.productId ?? "", object?.cartId ?? "", object?.product ?? {});
   }
 }
 
 class User {
-  constructor(
-    private id: string,
-    private username: string,
-    private email: string /*, other fields */
-  ) {}
+  constructor(private id: string, private username: string, private email: string /*, other fields */) {}
 }
 
 class CartStatus {

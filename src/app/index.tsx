@@ -3,5 +3,5 @@ import { Button } from "@rneui/base";
 import { Link, Redirect, Stack } from "expo-router";
 
 export default function Index() {
-  return <Redirect href={"/home"} />;
+  return <Redirect href={"/auth/sign-in"} />;
 }

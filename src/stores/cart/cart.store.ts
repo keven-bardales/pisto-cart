@@ -42,10 +42,12 @@ export class CartStore {
     useCartStore.getState().setCart(cart);
   }
 
-  removeProduct(product: CartDetail) {
+  removeProduct(productId: string) {
     const cart = useCartStore.getState().cart;
 
-    cart.removeProduct(product.productId);
+    cart.removeProduct(productId);
+
+    console.log(cart);
 
     useCartStore.getState().setCart(cart);
   }

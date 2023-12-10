@@ -1,11 +1,8 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Button, ButtonGroup, Card, Image, SearchBar } from "@rneui/base";
 import { useEffect, useRef, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
-import {
-  productCategoryStore,
-  useProductCategoryStore,
-} from "@/stores/product-category/product-category.store";
+import { productCategoryStore, useProductCategoryStore } from "@/stores/product-category/product-category.store";
 import { Link } from "expo-router";
 import { productStore, useProductStore } from "@/stores/product/product.store";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -72,14 +69,7 @@ export default function Home() {
 
     const searchToLowerCase = search.toLowerCase();
 
-    const newProducts = products.filter(
-      (product) =>
-        product.name.toLowerCase().includes(searchToLowerCase) ||
-        product.productCategory?.name
-          .toLowerCase()
-          .includes(searchToLowerCase) ||
-        product.code.toLowerCase().includes(searchToLowerCase)
-    );
+    const newProducts = products.filter((product) => product.name.toLowerCase().includes(searchToLowerCase) || product.productCategory?.name.toLowerCase().includes(searchToLowerCase) || product.code.toLowerCase().includes(searchToLowerCase));
 
     setfilteredProducts(newProducts);
   };
@@ -114,29 +104,56 @@ export default function Home() {
           }}
         >
           <SafeAreaView>
-            <Card.Title
+            <View
               style={{
-                textAlign: "left",
-                padding: 6,
-                width: "100%",
-                fontSize: 24,
-                fontWeight: "bold",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: 10,
               }}
             >
-              Bienvenido a nuestra tienda
-            </Card.Title>
+              <Card.Title
+                style={{
+                  textAlign: "left",
+                  padding: 6,
+                  width: "80%",
+                  fontSize: 24,
+                  fontWeight: "bold",
+                }}
+              >
+                Bienvenido a nuestra tienda
+              </Card.Title>
+              <Link
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  backgroundColor: "#000",
+                  padding: 10,
+                  borderRadius: 5,
+                  width: 100,
+                }}
+                href={"auth/sign-in"}
+              >
+                <Text
+                  style={{
+                    color: "#fff",
+                  }}
+                >
+                  Login
+                </Text>
+                <Icon name="user"></Icon>
+              </Link>
+            </View>
 
             <View
               style={{
                 marginBottom: 10,
               }}
             >
-              <SearchBar
-                ref={(search) => (search = searchBarRef)}
-                onChangeText={updateSearch}
-                value={search}
-                placeholder="Buscar productos, categorias, etc..."
-              />
+              <SearchBar ref={(search) => (search = searchBarRef)} onChangeText={updateSearch} value={search} placeholder="Buscar productos, categorias, etc..." />
 
               <Button
                 onPress={() => {
@@ -151,11 +168,7 @@ export default function Home() {
 
             {!isLoading && filteredProducts.length === 0 ? (
               <View style={{ alignItems: "center", justifyContent: "center" }}>
-                <Text
-                  style={{ fontSize: 18, fontWeight: "bold", marginTop: 20 }}
-                >
-                  No hay productos disponibles.
-                </Text>
+                <Text style={{ fontSize: 18, fontWeight: "bold", marginTop: 20 }}>No hay productos disponibles.</Text>
                 <Text style={{ marginTop: 10 }}>Intenta buscar otra cosa.</Text>
                 {/* Puedes agregar más contenido o un botón para acciones adicionales */}
               </View>
@@ -271,6 +284,8 @@ export default function Home() {
                 </Card.Title>
 
                 {filteredProducts.map((product) => {
+                  const isInCart = cart.cartDetail.some((c) => c.productId === product.id);
+
                   return (
                     <View
                       style={{
@@ -305,19 +320,34 @@ export default function Home() {
                         {product.name}
                       </Card.Title>
 
-                      <Button
-                        onPress={() => {
-                          cartStore.addProduct(product);
+                      {isInCart ? (
+                        <View style={styles.cartActions}>
+                          <TouchableOpacity onPress={() => cartStore.removeProduct(product.id)}>
+                            <Icon name="remove-circle" size={24} color="red" />
+                          </TouchableOpacity>
+                          <Text style={styles.cartQuantity}>Cantidad : {cart.cartDetail.find((c) => c.productId === product.id)?.quantity} </Text>
+                          <TouchableOpacity onPress={() => cartStore.addProduct(product)}>
+                            <Icon name="add-circle" size={24} color="green" />
+                          </TouchableOpacity>
+                          <TouchableOpacity onPress={() => cartStore.removeProduct(product.id)}>
+                            <Text>Eliminar</Text>
+                          </TouchableOpacity>
+                        </View>
+                      ) : (
+                        <Button
+                          onPress={() => {
+                            cartStore.addProduct(product);
 
-                          Toast.show({
-                            type: "success",
-                            text1: `${product?.name} agregado al carrito`,
-                            visibilityTime: 1000,
-                          });
-                        }}
-                      >
-                        Agregar al carrito
-                      </Button>
+                            Toast.show({
+                              type: "success",
+                              text1: `${product?.name} agregado al carrito`,
+                              visibilityTime: 1000,
+                            });
+                          }}
+                        >
+                          Agregar al carrito
+                        </Button>
+                      )}
 
                       <Text
                         style={{
@@ -343,6 +373,55 @@ export default function Home() {
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  productContainer: {
+    padding: 5,
+    backgroundColor: "#fff",
+    borderRadius: 5,
+    display: "flex",
+    flexDirection: "column",
+    width: "40%",
+    flexGrow: 1,
+    margin: 5,
+    position: "relative",
+  },
+  productImage: {
+    width: "100%",
+    minWidth: 100,
+    minHeight: 200,
+    height: "auto",
+  },
+  productName: {
+    marginTop: 5,
+    fontWeight: "bold",
+  },
+  productPrice: {
+    position: "absolute",
+    top: 5,
+    right: 5,
+    backgroundColor: "#fff",
+    borderRadius: 5,
+    padding: 5,
+    fontWeight: "bold",
+  },
+  cartActions: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: 5,
+  },
+  cartQuantity: {
+    fontWeight: "bold",
+  },
+  addToCartButton: {
+    backgroundColor: "lightblue",
+    padding: 5,
+    borderRadius: 5,
+    marginTop: 5,
+    alignItems: "center",
+  },
+});
 
 const LoadingCard = () => {
   return (
