@@ -16,6 +16,7 @@ import { Image } from "@rneui/base";
 const CartPage = () => {
   // Obtener el carrito de la tienda usando useCartStore
   const cart = useCartStore((state) => state.cart);
+  const setCart = useCartStore((state) => state.setCart);
 
   // Función para agregar cantidad a un ítem del carrito
   const increaseQuantity = (itemId) => {
@@ -56,16 +57,28 @@ const CartPage = () => {
           <Text style={styles.itemName}>{item.product.name}</Text>
           <Text style={styles.itemPrice}>${item.price} por unidad</Text>
           <View style={styles.quantityContainer}>
-            <TouchableOpacity onPress={() => decreaseQuantity(item.id)}>
+            <TouchableOpacity
+              onPress={() => {
+                cartStore.decreaseQuantity(item);
+              }}
+            >
               <Text style={styles.quantityButton}>-</Text>
             </TouchableOpacity>
             <Text style={styles.quantity}>{item.quantity}</Text>
-            <TouchableOpacity onPress={() => increaseQuantity(item.id)}>
+            <TouchableOpacity
+              onPress={() => {
+                cartStore.increaseQuantity(item);
+              }}
+            >
               <Text style={styles.quantityButton}>+</Text>
             </TouchableOpacity>
           </View>
         </View>
-        <TouchableOpacity onPress={() => removeFromCart(item.id)}>
+        <TouchableOpacity
+          onPress={() => {
+            cartStore.removeProduct(item);
+          }}
+        >
           <Text style={styles.removeButton}>Eliminar</Text>
         </TouchableOpacity>
       </View>

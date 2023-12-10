@@ -1,6 +1,6 @@
 import { shuffleProducts } from "@/lib/utils/shuffle-products";
 import { productService } from "@/services/product/product.service";
-import { Cart } from "@/types/cart/types/cart.type";
+import { Cart, CartDetail } from "@/types/cart/types/cart.type";
 import { Product } from "@/types/product/types/product.type";
 import { create } from "zustand";
 
@@ -40,6 +40,38 @@ export class CartStore {
     cart.addProduct(product);
 
     useCartStore.getState().setCart(cart);
+  }
+
+  removeProduct(product: CartDetail) {
+    const cart = useCartStore.getState().cart;
+
+    cart.removeProduct(product.productId);
+
+    useCartStore.getState().setCart(cart);
+  }
+
+  increaseQuantity(product: CartDetail) {
+    const cart = useCartStore.getState().cart;
+
+    cart.increaseQuantity(product.productId);
+
+    useCartStore.getState().setCart(cart);
+  }
+
+  decreaseQuantity(product: CartDetail) {
+    const cart = useCartStore.getState().cart;
+
+    cart.decreaseQuantity(product.productId);
+
+    useCartStore.getState().setCart(cart);
+  }
+
+  get productExists() {
+    return (productId: string) => {
+      const cart = useCartStore.getState().cart;
+
+      return cart.productExists(productId);
+    };
   }
 }
 

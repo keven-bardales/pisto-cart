@@ -89,7 +89,11 @@ export default function Home() {
       {hasPermission && searchByQrCode ? (
         <View style={StyleSheet.absoluteFillObject}>
           <BarCodeScanner
-            style={StyleSheet.absoluteFillObject}
+            style={{
+              minHeight: "90%",
+              maxHeight: "100%",
+              width: "100%",
+            }}
             onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
           />
           <Button

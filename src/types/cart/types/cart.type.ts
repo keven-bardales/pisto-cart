@@ -64,6 +64,60 @@ export class Cart {
       );
     }
   };
+
+  removeProduct = (productId: string) => {
+    const foundIndex = this.cartDetail.findIndex(
+      (cartDetail) => cartDetail.productId === productId
+    );
+
+    if (foundIndex !== -1) {
+      const quantity = this.cartDetail[foundIndex].quantity;
+      if (quantity > 1) {
+        this.cartDetail[foundIndex].quantity -= 1;
+      } else {
+        this.cartDetail.splice(foundIndex, 1);
+      }
+    }
+  };
+
+  increaseQuantity = (productId: string) => {
+    const foundIndex = this.cartDetail.findIndex(
+      (cartDetail) => cartDetail.productId === productId
+    );
+
+    if (foundIndex !== -1) {
+      this.cartDetail[foundIndex].quantity += 1;
+    }
+  };
+
+  decreaseQuantity = (productId: string) => {
+    const foundIndex = this.cartDetail.findIndex(
+      (cartDetail) => cartDetail.productId === productId
+    );
+
+    if (foundIndex !== -1) {
+      const quantity = this.cartDetail[foundIndex].quantity;
+      if (quantity > 1) {
+        this.cartDetail[foundIndex].quantity -= 1;
+      }
+    }
+  };
+
+  productExists = (productId: string) => {
+    return this.cartDetail.some(
+      (cartDetail) => cartDetail.productId === productId
+    );
+  };
+
+  emptyCart = () => {
+    this.cartDetail = [];
+    this.total = 0;
+    this.subTotal = 0;
+    this.subTotalDiscount = 0;
+    this.subTotalTax = 0;
+    this.discount = 0;
+    this.tax = 0;
+  };
 }
 
 export class CartDetail {
